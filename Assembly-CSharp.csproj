@@ -40,6 +40,8 @@
      <Compile Include="Assets\Scripts\CamRotate.cs" />
      <Compile Include="Assets\Scripts\CamFollow.cs" />
      <Compile Include="Assets\Scripts\PlayerMove.cs" />
+     <Compile Include="Assets\Scripts\BombAction.cs" />
+     <Compile Include="Assets\Scripts\DestroyEffect.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
