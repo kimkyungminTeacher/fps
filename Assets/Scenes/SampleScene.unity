@@ -796,6 +796,7 @@ MonoBehaviour:
   moveSpeed: 7
   jumpPower: 10
   isJumping: 0
+  hp: 20
 --- !u!114 &1280490197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,6 +812,7 @@ MonoBehaviour:
   firePosition: {fileID: 861163288}
   bombFactory: {fileID: 725620942894268726, guid: 092bf0a2c73681847a734344f5b790fe, type: 3}
   throwPower: 15
+  weaponPower: 5
   bulletEffect: {fileID: 257460889}
 --- !u!1 &1436915505
 GameObject:
@@ -986,7 +988,7 @@ GameObject:
   - component: {fileID: 1779418582}
   - component: {fileID: 1779418581}
   - component: {fileID: 1779418580}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1007,7 +1009,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   findDistance: 8
   attackDistance: 2
+  moveDistance: 20
   moveSpeed: 5
+  attackPower: 3
+  hp: 15
 --- !u!143 &1779418581
 CharacterController:
   m_ObjectHideFlags: 0

@@ -146,6 +146,11 @@ public class EnemyFSM : MonoBehaviour
 
     public void HitEnemy(int hitPower)
     {
+        if(m_state == EnemyState.Damanged || m_state == EnemyState.Die || m_state == EnemyState.Return)
+        {
+            return;
+        }
+
         hp -= hitPower;
 
         if (hp > 0)
@@ -164,8 +169,17 @@ public class EnemyFSM : MonoBehaviour
 
     private void Die()
     {
-        throw new NotImplementedException();
+        StopAllCoroutines();
+
+        StartCoroutine(DieProcess());
     }
 
+    IEnumerator DieProcess()
+    {
+        cc.enabled = false;
 
+        yield return new WaitForSeconds(2);
+        print("¼Ò¸ê");
+        Destroy(gameObject);
+    }
 }
