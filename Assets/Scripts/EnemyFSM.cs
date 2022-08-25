@@ -18,19 +18,27 @@ public class EnemyFSM : MonoBehaviour
 
     public float findDistance = 8f;
     public float attackDistance = 2f;
+    public float moveDistance = 20f;
+
     public float moveSpeed = 5f;
+    public int attackPower = 3;
 
     Transform player;
     CharacterController cc;
 
     float currentTime = 0;
     float attackDelay = 2f;
+
+    Vector3 originPos;
+    public int hp = 15;
+
     //----------------------------------------------------
 
     private void Start() {
         m_state = EnemyState.Idle;
         player = GameObject.Find("Player").transform;
         cc = GetComponent<CharacterController>();
+        originPos = transform.position;
     }
 
     private void Update() {
@@ -49,10 +57,10 @@ public class EnemyFSM : MonoBehaviour
                 Return();
                 break;
             case EnemyState.Damanged :
-                Damanged();
+                //Damanged();
                 break;
             case EnemyState.Die :
-                Die();
+                //Die();
                 break;
         }
     }
@@ -68,6 +76,12 @@ public class EnemyFSM : MonoBehaviour
 
     private void Move()
     {
+        if (Vector3.Distance(transform.position, originPos) > moveDistance) {
+            m_state = EnemyState.Return;
+            print("상태 전환 : Move -> Return"); 
+            return;
+        }
+
         if (Vector3.Distance(transform.position, player.position) < attackDistance)
         {
             m_state = EnemyState.Attack;
@@ -94,24 +108,61 @@ public class EnemyFSM : MonoBehaviour
             currentTime += Time.deltaTime;
             if (currentTime > attackDelay)
             {
-                print("공격!");
+                player.GetComponent<PlayerMove>().DamageAction(attackPower);
+                print("공격");
                 currentTime = 0;
             }
         }
     }
 
-
-    private void Die()
+    private void Return()
     {
-        throw new NotImplementedException();
+        if (Vector3.Distance(transform.position, originPos) < 0.1f)
+        {
+            m_state = EnemyState.Idle;
+            print("상태 전환 : Return -> Idle");
+        }
+        else
+        {
+            Vector3 dir = (originPos - transform.position).normalized;
+            cc.Move(dir * moveSpeed * Time.deltaTime);
+        }
     }
 
     private void Damanged()
     {
-        throw new NotImplementedException();
+        StartCoroutine(DamageProcess());
     }
 
-    private void Return()
+    IEnumerator DamageProcess()
+    {
+        //0.5초 기다리고
+        yield return new WaitForSeconds(0.5f);
+
+        //Move로 상태 변경
+        m_state = EnemyState.Move;
+        print("상태 전환 : Damanged -> Move");
+    }
+
+    public void HitEnemy(int hitPower)
+    {
+        hp -= hitPower;
+
+        if (hp > 0)
+        {
+            m_state = EnemyState.Damanged;
+            print("상태 전환 : Any -> Damanged");
+            Damanged();
+        }
+        else
+        {
+            m_state = EnemyState.Die;
+            print("상태 전환 : Any -> Die");
+            Die();
+        }
+    }
+
+    private void Die()
     {
         throw new NotImplementedException();
     }

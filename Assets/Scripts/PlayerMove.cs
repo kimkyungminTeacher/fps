@@ -13,6 +13,8 @@ public class PlayerMove : MonoBehaviour
     public float jumpPower = 10f;
     public bool isJumping = false;
 
+    public int hp = 20;
+
     private void Start() {
         cc = GetComponent<CharacterController>();
     }
@@ -40,5 +42,10 @@ public class PlayerMove : MonoBehaviour
         dir.y = yVelocity;
 
         cc.Move(dir * moveSpeed * Time.deltaTime);
+    }
+
+    public void DamageAction(int damage)
+    {
+        hp -= damage;
     }
 }
