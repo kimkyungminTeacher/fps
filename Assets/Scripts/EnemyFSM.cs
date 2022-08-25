@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyFSM : MonoBehaviour
 {
@@ -31,6 +32,9 @@ public class EnemyFSM : MonoBehaviour
 
     Vector3 originPos;
     public int hp = 15;
+    int maxHp = 15;
+
+    public Slider hpSlider;
 
     //----------------------------------------------------
 
@@ -63,6 +67,8 @@ public class EnemyFSM : MonoBehaviour
                 //Die();
                 break;
         }
+
+        hpSlider.value = (float)hp / (float)maxHp;
     }
 
     private void Idle()
