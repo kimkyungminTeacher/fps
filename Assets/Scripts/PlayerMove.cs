@@ -18,6 +18,7 @@ public class PlayerMove : MonoBehaviour
     int maxHp = 20;
 
     public Slider hpSlider;
+    public GameObject hitEffect;
 
     private void Start() {
         cc = GetComponent<CharacterController>();
@@ -25,6 +26,11 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.gm.gState != GameManager.GameState.Run)
+        {
+            return;
+        }
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -53,5 +59,19 @@ public class PlayerMove : MonoBehaviour
     public void DamageAction(int damage)
     {
         hp -= damage;
+
+        if(hp > 0)
+        {
+            StartCoroutine(PlayHitEffect());
+        }
+    }
+
+    IEnumerator PlayHitEffect()
+    {
+        hitEffect.SetActive(true);
+
+        yield return new WaitForSeconds(0.3f);
+
+        hitEffect.SetActive(false);
     }
 }

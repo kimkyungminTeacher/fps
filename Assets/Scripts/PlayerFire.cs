@@ -18,6 +18,11 @@ public class PlayerFire : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.gm.gState != GameManager.GameState.Run)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(1))   
         {
             GameObject bomb = Instantiate(bombFactory);
