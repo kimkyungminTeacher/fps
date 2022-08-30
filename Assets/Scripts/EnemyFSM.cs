@@ -35,6 +35,7 @@ public class EnemyFSM : MonoBehaviour
     int maxHp = 15;
 
     public Slider hpSlider;
+    Animator anim;
 
     //----------------------------------------------------
 
@@ -43,6 +44,7 @@ public class EnemyFSM : MonoBehaviour
         player = GameObject.Find("Player").transform;
         cc = GetComponent<CharacterController>();
         originPos = transform.position;
+        anim = transform.GetComponentInChildren<Animator>();
     }
 
     private void Update() {
@@ -77,6 +79,8 @@ public class EnemyFSM : MonoBehaviour
         {
             m_state = EnemyState.Move;
             print("상태 전환 : Idle -> Move");
+
+            anim.SetTrigger("IdleToMove");
         }
     }
 
@@ -98,6 +102,7 @@ public class EnemyFSM : MonoBehaviour
         else
         {
             Vector3 dir = (player.position - transform.position).normalized;
+            transform.forward = dir;
             cc.Move(dir * moveSpeed * Time.deltaTime);
         }
     }
@@ -125,12 +130,18 @@ public class EnemyFSM : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, originPos) < 0.1f)
         {
+            transform.position = originPos;
+            hp = maxHp;
+
             m_state = EnemyState.Idle;
             print("상태 전환 : Return -> Idle");
+
+            anim.SetTrigger("MoveToIdle");
         }
         else
         {
             Vector3 dir = (originPos - transform.position).normalized;
+            transform.forward = dir;
             cc.Move(dir * moveSpeed * Time.deltaTime);
         }
     }
