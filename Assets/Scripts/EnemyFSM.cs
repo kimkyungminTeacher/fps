@@ -31,6 +31,7 @@ public class EnemyFSM : MonoBehaviour
     float attackDelay = 2f;
 
     Vector3 originPos;
+    Quaternion originRot;
     public int hp = 15;
     int maxHp = 15;
 
@@ -44,6 +45,7 @@ public class EnemyFSM : MonoBehaviour
         player = GameObject.Find("Player").transform;
         cc = GetComponent<CharacterController>();
         originPos = transform.position;
+        originRot = transform.rotation;
         anim = transform.GetComponentInChildren<Animator>();
     }
 
@@ -130,8 +132,9 @@ public class EnemyFSM : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, originPos) < 0.1f)
         {
-            //transform.position = originPos;
-            //hp = maxHp;
+            transform.position = originPos;
+            transform.rotation = originRot;
+            hp = maxHp;
 
             m_state = EnemyState.Idle;
             print("상태 전환 : Return -> Idle");
