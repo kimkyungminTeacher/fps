@@ -130,8 +130,8 @@ public class EnemyFSM : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, originPos) < 0.1f)
         {
-            transform.position = originPos;
-            hp = maxHp;
+            //transform.position = originPos;
+            //hp = maxHp;
 
             m_state = EnemyState.Idle;
             print("상태 전환 : Return -> Idle");
