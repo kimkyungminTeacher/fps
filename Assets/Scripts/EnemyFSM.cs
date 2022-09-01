@@ -100,6 +100,7 @@ public class EnemyFSM : MonoBehaviour
             print("상태 전환 : Move -> Attack");
 
             currentTime = attackDelay;
+            anim.SetTrigger("MoveToAttackDelay");
         }
         else
         {
@@ -115,6 +116,8 @@ public class EnemyFSM : MonoBehaviour
         {
             m_state = EnemyState.Move;
             print("상태 전환 : Attack -> Move");
+
+            anim.SetTrigger("AttackToMove");
         }
         else
         {
@@ -124,13 +127,15 @@ public class EnemyFSM : MonoBehaviour
                 player.GetComponent<PlayerMove>().DamageAction(attackPower);
                 print("공격");
                 currentTime = 0;
+
+                anim.SetTrigger("StartAttack");
             }
         }
     }
 
     private void Return()
     {
-        if (Vector3.Distance(transform.position, originPos) < 0.1f)
+        if (Vector3.Distance(transform.position, originPos) <= 0.1f)
         {
             transform.position = originPos;
             transform.rotation = originRot;
@@ -162,6 +167,8 @@ public class EnemyFSM : MonoBehaviour
         //Move로 상태 변경
         m_state = EnemyState.Move;
         print("상태 전환 : Damanged -> Move");
+
+        anim.SetTrigger("IdleToMove");  //<== 
     }
 
     public void HitEnemy(int hitPower)
