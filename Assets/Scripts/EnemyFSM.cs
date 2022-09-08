@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class EnemyFSM : MonoBehaviour
 {
-    enum EnemyState
+    public enum EnemyState
     {
         Idle, 
         Move,
@@ -15,7 +15,7 @@ public class EnemyFSM : MonoBehaviour
         Damanged,
         Die
     }
-    EnemyState m_state;
+    public EnemyState m_state;
 
     public float findDistance = 8f;
     public float attackDistance = 2f;
@@ -167,7 +167,7 @@ public class EnemyFSM : MonoBehaviour
     IEnumerator DamageProcess()
     {
         //0.5초 기다리고
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         //Move로 상태 변경
         m_state = EnemyState.Move;
@@ -189,12 +189,16 @@ public class EnemyFSM : MonoBehaviour
         {
             m_state = EnemyState.Damanged;
             print("상태 전환 : Any -> Damanged");
+
+            anim.SetTrigger("Damaged");
             Damanged();
         }
         else
         {
             m_state = EnemyState.Die;
             print("상태 전환 : Any -> Die");
+
+            anim.SetTrigger("Die");
             Die();
         }
     }
