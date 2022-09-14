@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class EnemyFSM : MonoBehaviour
@@ -37,6 +38,7 @@ public class EnemyFSM : MonoBehaviour
 
     public Slider hpSlider;
     Animator anim;
+    NavMeshAgent smith;
 
     //----------------------------------------------------
 
@@ -47,6 +49,7 @@ public class EnemyFSM : MonoBehaviour
         originPos = transform.position;
         originRot = transform.rotation;
         anim = transform.GetComponentInChildren<Animator>();
+        smith = GetComponent<NavMeshAgent>();
     }
 
     private void Update() {
@@ -104,9 +107,14 @@ public class EnemyFSM : MonoBehaviour
         }
         else
         {
-            Vector3 dir = (player.position - transform.position).normalized;
+            /*Vector3 dir = (player.position - transform.position).normalized;
             transform.forward = dir;
-            cc.Move(dir * moveSpeed * Time.deltaTime);
+            cc.Move(dir * moveSpeed * Time.deltaTime); */
+
+            smith.isStopped = true;
+            smith.ResetPath();
+            smith.stoppingDistance = attackDistance;
+            smith.destination = player.position;
         }
     }
 
@@ -142,6 +150,9 @@ public class EnemyFSM : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, originPos) <= 0.1f)
         {
+            smith.isStopped = true;
+            smith.ResetPath();
+
             transform.position = originPos;
             transform.rotation = originRot;
             hp = maxHp;
@@ -153,9 +164,12 @@ public class EnemyFSM : MonoBehaviour
         }
         else
         {
-            Vector3 dir = (originPos - transform.position).normalized;
+            /* Vector3 dir = (originPos - transform.position).normalized;
             transform.forward = dir;
-            cc.Move(dir * moveSpeed * Time.deltaTime);
+            cc.Move(dir * moveSpeed * Time.deltaTime); */
+
+            smith.destination = originPos;
+            smith.stoppingDistance = 0;
         }
     }
 
@@ -184,6 +198,8 @@ public class EnemyFSM : MonoBehaviour
         }
 
         hp -= hitPower;
+        smith.isStopped = true;
+        smith.ResetPath();
 
         if (hp > 0)
         {

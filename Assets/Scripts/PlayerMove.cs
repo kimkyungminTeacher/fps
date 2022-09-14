@@ -42,6 +42,7 @@ public class PlayerMove : MonoBehaviour
         anim.SetFloat("MoveMotion", dir.magnitude);
 
         dir = Camera.main.transform.TransformDirection(dir);
+        //transform.forward = dir;
 
         if (cc.collisionFlags == CollisionFlags.Below)
         {
